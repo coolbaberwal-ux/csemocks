@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candidate Portal Login — CSEMocks</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .login-wrapper {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .login-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 36px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: var(--shadow-card);
+    }
+    .form-group { margin-bottom: 20px; }
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    .form-control {
+      width: 100%;
+      background: var(--bg-body);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 12px;
+      border-radius: 6px;
+      outline: none;
+    }
+    .form-control:focus { border-color: var(--brand-blue); }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="container nav-content">
+      <a href="/" class="logo-anchor">
+        <span class="logo-text">CSEMOCKS</span>
+      </a>
+      <a href="/" class="btn-cta btn-cta-ghost" style="padding: 6px 14px; font-size: 0.85rem;">&larr; Back to Home</a>
+    </div>
+  </nav>
+
+  <div class="login-wrapper">
+    <div class="login-box">
+      <h2 style="font-size: 1.5rem; margin-bottom: 6px;">Aspirant Login</h2>
+      <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 24px;">Enter the Roll Number and PIN sent to your WhatsApp by Ankit.</p>
+
+      <div id="errorAlert" style="display: none; background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: var(--danger); padding: 10px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 16px;"></div>
+
+      <form id="candidateLoginForm">
+        <div class="form-group">
+          <label class="form-label" for="rollInput">Roll Number</label>
+          <input type="text" id="rollInput" class="form-control" placeholder="e.g. UPSC202701" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pinInput">Security PIN</label>
+          <input type="password" id="pinInput" class="form-control" placeholder="••••" required>
+        </div>
+
+        <button type="submit" class="btn-cta btn-cta-gold" style="width: 100%; justify-content: center;">Authenticate Access &rarr;</button>
+      </form>
+
+      <div style="margin-top: 24px; text-align: center; font-size: 0.82rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); padding-top: 16px;">
+        Not registered yet? <a href="/#pricingSection" style="color: var(--brand-gold); text-decoration: none; font-weight: 600;">Get Access Pass Here</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { loginCandidate, isUserLoggedIn } from './js/auth-engine.js';
+
+    if (isUserLoggedIn()) {
+      window.location.href = "/";
+    }
+
+    const form = document.getElementById("candidateLoginForm");
+    const alertBox = document.getElementById("errorAlert");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      alertBox.style.display = "none";
+
+      const roll = document.getElementById("rollInput").value;
+      const pin = document.getElementById("pinInput").value;
+
+      const res = await loginCandidate(roll, pin);
+      if (res.success) {
+        window.location.href = "/";
+      } else {
+        alertBox.textContent = res.message;
+        alertBox.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>
