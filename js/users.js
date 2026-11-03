@@ -9,4 +9,10 @@ export const validUsers = [
     name: "Ankit",
     plan: "Target 2027 Prelims Series"
   },
+  {
+    rollNo: "UPSC202708",
+    pinHash: "27a8838acf6dbe16511a9c1fd00cfea420fe54fb0566593120f1300023dacb74", // Original PIN: Main Nahi Btaunga
+    name: "Saksham",
+    plan: "Target 2027 Prelims Series"
+  },
 ];
